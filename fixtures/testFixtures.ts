@@ -1,20 +1,29 @@
-import { test as baseTest } from '@playwright/test';
+// fixtures/testFixtures.ts
+import { test as base } from '@playwright/test';
 import { LoginPage } from '../pages/LoginPage';
 import { InventoryPage } from '../pages/InventoryPage';
+import { CartPage } from '../pages/CartPage';
+import { CheckoutPage } from '../pages/CheckoutPage';
 
-type Pages = {
+type CustomFixtures = {
   loginPage: LoginPage;
   inventoryPage: InventoryPage;
+  cartPage: CartPage;
+  checkoutPage: CheckoutPage;
 };
 
-export const test = baseTest.extend<Pages>({
+export const test = base.extend<CustomFixtures>({
   loginPage: async ({ page }, use) => {
-    const loginPage = new LoginPage(page);
-    await use(loginPage);
+    await use(new LoginPage(page));
   },
   inventoryPage: async ({ page }, use) => {
-    const inventoryPage = new InventoryPage(page);
-    await use(inventoryPage);
+    await use(new InventoryPage(page));
+  },
+  cartPage: async ({ page }, use) => {
+    await use(new CartPage(page));
+  },
+  checkoutPage: async ({ page }, use) => {
+    await use(new CheckoutPage(page));
   },
 });
 

@@ -1,3 +1,4 @@
+// pages/LoginPage.ts
 import { Page, Locator } from '@playwright/test';
 import { BasePage } from './BasePage';
 
@@ -19,9 +20,25 @@ export class LoginPage extends BasePage {
     await this.navigateTo('/');
   }
 
-  async login(username: string, password: string): Promise<void> {
+  async enterUsername(username: string): Promise<void> {
     await this.usernameInput.fill(username);
+  }
+
+  async enterPassword(password: string): Promise<void> {
     await this.passwordInput.fill(password);
+  }
+
+  async clickLogin(): Promise<void> {
     await this.loginButton.click();
   }
+
+  async login(username: string, password: string): Promise<void> {
+    await this.enterUsername(username);
+    await this.enterPassword(password);
+    await this.clickLogin();
+  }
+  
+async submitWithEnter(): Promise<void> {
+  await this.passwordInput.press('Enter');
+}
 }
