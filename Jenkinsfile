@@ -18,21 +18,21 @@ pipeline {
 
         stage('Install Dependencies') {
             steps {
-                sh 'npm ci'
+                bat 'npm install'
             }
         }
 
         stage('Install Playwright Browsers') {
             steps {
                 // Installs only Chromium and Firefox plus OS-level system dependencies
-                sh 'npx playwright install --with-deps chromium firefox'
+                bat 'npx playwright install --with-deps'
             }
         }
 
         stage('Run Tests') {
             steps {
                 // Runs parallel cross-browser tests against Chromium and Firefox
-                sh 'npm test'
+                bat 'npx playwright test'
             }
         }
     }
