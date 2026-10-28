@@ -1,5 +1,6 @@
 import { test, expect } from '../../fixtures/pageFixtures';
 import { checkoutData } from '../../test-data/checkoutData';
+import { products } from '../../test-data/productData';
 import { testUsers } from '../../test-data/userData';
 
 test.describe('E2E Checkout Flow', () => {
@@ -19,20 +20,8 @@ test.describe('E2E Checkout Flow', () => {
     cartPage,
     checkoutPage,
   }) => {
-    const targetProduct = {
-      slug: 'sauce-labs-backpack',
-      name: 'Sauce Labs Backpack',
-      price: '$29.99',
-    };
-
-    const customerDetails = {
-      firstName: 'John',
-      lastName: 'Doe',
-      postalCode: '560001',
-    };
-
     // Step 1: Locate 'Sauce Labs Backpack' and click 'Add to cart'
-    await inventoryPage.addProductToCart(targetProduct.slug);
+    await inventoryPage.addProductToCart(products.sauceLabsBackpack.slug);
 
     // Step 2: Verify shopping cart badge displays '1'
     await expect(inventoryPage.cartBadge).toBeVisible();
@@ -44,8 +33,8 @@ test.describe('E2E Checkout Flow', () => {
 
     // Step 4: Verify cart contains exactly one item with correct name and price
     await expect(cartPage.cartItems).toHaveCount(1);
-    await expect(cartPage.itemName).toHaveText(targetProduct.name);
-    await expect(cartPage.itemPrice).toHaveText(targetProduct.price);
+    await expect(cartPage.itemName).toHaveText(products.sauceLabsBackpack.name);
+    await expect(cartPage.itemPrice).toHaveText(products.sauceLabsBackpack.price);
 
     // Step 5: Click 'Checkout'
     await cartPage.clickCheckout();
@@ -53,14 +42,16 @@ test.describe('E2E Checkout Flow', () => {
 
     // Step 6: Enter customer information and click 'Continue'
     await checkoutPage.fillCustomerInformation(
-      customerDetails.firstName,
-      customerDetails.lastName,
-      customerDetails.postalCode
+      checkoutData.validCustomer.firstName,
+      checkoutData.validCustomer.lastName,
+      checkoutData.validCustomer.postalCode
     );
 
     // Step 7: Verify Checkout Overview displays item total, tax, and total price
     await expect(page).toHaveURL(/.*checkout-step-two\.html/);
-    await expect(checkoutPage.summarySubtotal).toContainText('Item total: $29.99');
+    await expect(checkoutPage.summarySubtotal).toContainText(
+      `Item total: ${products.sauceLabsBackpack.price}`
+    );
     await expect(checkoutPage.summaryTax).toContainText('Tax: $2.40');
     await expect(checkoutPage.summaryTotal).toContainText('Total: $32.39');
 
@@ -81,7 +72,7 @@ test.describe('E2E Checkout Flow', () => {
     cartPage,
     checkoutPage,
   }) => {
-    await inventoryPage.addProductToCart('sauce-labs-backpack');
+    await inventoryPage.addProductToCart(products.sauceLabsBackpack.slug);
     await inventoryPage.openCart();
     await cartPage.clickCheckout();
     await expect(page).toHaveURL(/.*checkout-step-one\.html/);
@@ -107,7 +98,7 @@ test.describe('E2E Checkout Flow', () => {
     cartPage,
     checkoutPage,
   }) => {
-    await inventoryPage.addProductToCart('sauce-labs-backpack');
+    await inventoryPage.addProductToCart(products.sauceLabsBackpack.slug);
     await inventoryPage.openCart();
     await cartPage.clickCheckout();
     await expect(page).toHaveURL(/.*checkout-step-one\.html/);
@@ -139,7 +130,7 @@ test.describe('E2E Checkout Flow', () => {
     cartPage,
     checkoutPage,
   }) => {
-    await inventoryPage.addProductToCart('sauce-labs-backpack');
+    await inventoryPage.addProductToCart(products.sauceLabsBackpack.slug);
     await inventoryPage.openCart();
     await cartPage.clickCheckout();
     await expect(page).toHaveURL(/.*checkout-step-one\.html/);
@@ -168,7 +159,7 @@ test.describe('E2E Checkout Flow', () => {
       cartPage,
       inventoryPage,
     }) => {
-      await inventoryPage.addProductToCart('sauce-labs-backpack');
+      await inventoryPage.addProductToCart(products.sauceLabsBackpack.slug);
       await inventoryPage.openCart();
       await cartPage.clickCheckout();
       await expect(page).toHaveURL(/.*checkout-step-one\.html/);
@@ -179,7 +170,7 @@ test.describe('E2E Checkout Flow', () => {
       await expect(inventoryPage.cartBadge).toBeVisible();
       await expect(inventoryPage.cartBadge).toHaveText('1');
       await expect(cartPage.cartItems).toHaveCount(1);
-      await expect(cartPage.itemName).toHaveText('Sauce Labs Backpack');
+      await expect(cartPage.itemName).toHaveText(products.sauceLabsBackpack.name);
     });
  
   test('TC_E2E_06 - Cancel checkout at Overview (Step Two) and verify navigation back to inventory', async ({
@@ -195,7 +186,7 @@ test.describe('E2E Checkout Flow', () => {
       testUsers.standardUser.username,
       testUsers.standardUser.password
     );
-    await inventoryPage.addProductToCart('sauce-labs-backpack');
+    await inventoryPage.addProductToCart(products.sauceLabsBackpack.slug);
     await inventoryPage.openCart();
     await cartPage.clickCheckout();
 
