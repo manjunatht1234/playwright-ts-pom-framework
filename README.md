@@ -1,154 +1,209 @@
-🎭 Playwright + TypeScript Automation Framework
+```md
+# 🎭 Playwright + TypeScript Automation Framework
 
-A scalable, production-style test automation framework for Web UI (Swag Labs / SauceDemo) and REST API (Simple Books API) testing, built with Playwright, TypeScript and the Page Object Model (POM) design pattern.
+A scalable, production-style automation framework for web UI and REST API testing, built with Playwright, TypeScript, and the Page Object Model (POM) design pattern.
 
-Playwright TypeScript Node Allure Jenkins GitHub Actions
+This repository supports:
+- Web UI testing for Swag Labs (SauceDemo)
+- REST API testing for Simple Books API
+- Cross-browser execution
+- Allure and Playwright reporting
+- CI/CD integration with Jenkins and GitHub Actions
 
-📖 Table of Contents
-Overview
-Key Features
-Technology Stack
-Framework Architecture
-Project Structure
-Applications Under Test
-Prerequisites
-Installation & Setup
-Environment Configuration
-Test Scenarios Covered
-Running Tests
-Page Object Model & Fixtures
-API Testing Approach
-Test Data Management
-Reporting
-CI/CD Integration
-Troubleshooting
-Coding Conventions
+---
 
-🎯 Overview
+## Table of Contents
+
+- [Overview](#overview)
+- [Key Features](#key-features)
+- [Technology Stack](#technology-stack)
+- [Framework Architecture](#framework-architecture)
+- [Project Structure](#project-structure)
+- [Applications Under Test](#applications-under-test)
+- [Prerequisites](#prerequisites)
+- [Installation & Setup](#installation--setup)
+- [Environment Configuration](#environment-configuration)
+- [Test Scenarios Covered](#test-scenarios-covered)
+- [Running Tests](#running-tests)
+- [Page Object Model & Fixtures](#page-object-model--fixtures)
+- [API Testing Approach](#api-testing-approach)
+- [Test Data Management](#test-data-management)
+- [Reporting](#reporting)
+- [CI/CD Integration](#cicd-integration)
+- [Troubleshooting](#troubleshooting)
+- [Coding Conventions](#coding-conventions)
+- [Contributing](#contributing)
+
+---
+
+## Overview
 
 This repository contains a dual-layer automation framework:
 
-Layer	Target Application	What Is Tested
-🌐 Web UI	Swag Labs (SauceDemo)	Login, product catalog, sorting, cart, checkout and order confirmation
-🔌 REST API	Simple Books API	Status, books catalog, API client registration, and full order CRUD with authentication
+| Layer | Target Application | Scope |
+| --- | --- | --- |
+| 🌐 Web UI | Swag Labs (SauceDemo) | Login, product catalog, sorting, cart, checkout, and order confirmation |
+| 🔌 REST API | Simple Books API | Service health, books retrieval, client registration, and order CRUD |
 
-The framework focuses on maintainability (POM + fixtures), reliability (isolated, self-contained tests with dynamic data) and visibility (Playwright HTML + Allure reports, traces, screenshots).
+The framework emphasizes:
+- Maintainability via Page Object Model (POM)
+- Reliability through isolated test data and fixtures
+- Visibility through Playwright HTML and Allure reports
+- CI/CD readiness for Jenkins and GitHub Actions
 
-✨ Key Features
-✅ Dual-Layer Automation — browser-based E2E UI tests and fast, lightweight API tests in one repo
-✅ Page Object Model (POM) — locators and DOM interactions fully decoupled from test logic, with a shared BasePage
-✅ Custom Playwright Fixtures — page objects are injected automatically into tests (no repetitive setup)
-✅ Dynamic & Isolated Test Data — random generators and timestamp/crypto hashing prevent collisions across parallel runs
-✅ Multi-Browser Testing — Chromium, Firefox and WebKit
-✅ Parallel Execution — isolated browser contexts running across multiple workers
-✅ Rich Reporting — Playwright HTML Report and Allure Report with screenshots, traces and steps
-✅ CI/CD Ready — declarative Jenkinsfile and GitHub Actions workflow
-✅ Centralized Utilities — environment loader with default fallbacks and dynamic data generators
-🛠️ Technology Stack
-Component	Technology	Version / Requirement
-Automation Engine	Playwright Test	^1.40.0 or higher
-Language	TypeScript	^5.0.0
-Runtime	Node.js	v18.x or v20.x LTS
-Design Pattern	Page Object Model	Inheritance via BasePage
-Reporting	allure-playwright, allure-commandline, Playwright HTML	Allure needs Java 8+
-CI/CD	Jenkins, GitHub Actions	Declarative pipeline (Jenkinsfile)
-Apps Under Test	SauceDemo (UI), Simple Books API (REST)	saucedemo.com, simple-books-api.click
-🏗️ Framework Architecture
-🧪 Test Layer
-📊 Reports
-Playwright HTMLplaywright-report/
-Allureallure-results/
-📁 Test Data
-test-data/checkoutData.tsuserData.ts
-🔧 Utilities
-envHelper.ts
-dataGenerator.ts
-index.tsbarrel exports
-💉 Fixtures
-fixtures/pageFixtures.tsextended test + POMinjection
-📄 Page Object Layer
-BasePage
-LoginPage
-InventoryPage
-CartPage
-CheckoutPage
-⚙️ Configuration
-playwright.config.tsprojects, reporters, retries
-utils/envHelper.tsenv vars + defaults
-tsconfig.json
-tests/web/login.spec.tse2e-order.spec.ts
-tests/api/simple-books-api.spec.ts
-📁 Project Structure
-text
+---
+
+## Key Features
+
+- ✅ Dual-layer automation: UI + API tests in one repository
+- ✅ Page Object Model (POM) with reusable BasePage
+- ✅ Custom Playwright fixtures for dependency injection
+- ✅ Dynamic and isolated test data generation
+- ✅ Cross-browser execution: Chromium, Firefox, WebKit
+- ✅ Parallel execution supported
+- ✅ Rich reporting with Playwright HTML and Allure
+- ✅ CI/CD ready with Jenkins and GitHub Actions
+- ✅ Centralized utilities for environment configuration
+
+---
+
+## Technology Stack
+
+| Component | Technology | Requirement |
+| --- | --- | --- |
+| Automation Engine | Playwright Test | ^1.40.0 or higher |
+| Language | TypeScript | ^5.0.0 |
+| Runtime | Node.js | v18.x or v20.x LTS |
+| Design Pattern | Page Object Model | Inheritance via `BasePage` |
+| Reporting | Allure + Playwright HTML | Java 8+ required for Allure |
+| CI/CD | Jenkins, GitHub Actions | Declarative pipeline support |
+| Apps Under Test | SauceDemo, Simple Books API | UI + REST |
+
+---
+
+## Framework Architecture
+
+### Test Layer
+- UI tests
+- API tests
+- Shared fixtures and utility services
+
+### Reports
+- `playwright-report/`
+- `allure-results/`
+
+### Test Data
+- `test-data/checkoutData.ts`
+- `test-data/userData.ts`
+
+### Utilities
+- `utils/envHelper.ts`
+- `utils/dataGenerator.ts`
+- `utils/index.ts`
+
+### Fixtures
+- `fixtures/pageFixtures.ts`
+
+### Page Object Layer
+- `pages/BasePage.ts`
+- `pages/LoginPage.ts`
+- `pages/InventoryPage.ts`
+- `pages/CartPage.ts`
+- `pages/CheckoutPage.ts`
+
+### Configuration
+- `playwright.config.ts`
+- `tsconfig.json`
+
+### Test Files
+- `tests/web/login.spec.ts`
+- `tests/web/e2e-order.spec.ts`
+- `tests/api/simple-books-api.spec.ts`
+
+---
+
+## Project Structure
+
+```text
 playwright-pom-framework/
 ├── .github/
 │   └── workflows/
-│       └── playwright.yml           # GitHub Actions automated regression workflow
-├── allure-results/                  # Raw Allure result artifacts (generated)
+│       └── playwright.yml
+├── allure-results/
 ├── docs/
-│   └── git_github.md                # Branching strategy and team Git standards
+│   └── git_github.md
 ├── fixtures/
-│   └── pageFixtures.ts              # Extended Playwright `test` injecting POM classes
+│   └── pageFixtures.ts
 ├── pages/
-│   ├── BasePage.ts                  # Base class: common interactions & waits
-│   ├── LoginPage.ts                 # SauceDemo login actions, locators, error banners
-│   ├── InventoryPage.ts             # Product list, sorting, cart badge
-│   ├── CartPage.ts                  # Cart verification and checkout navigation
-│   └── CheckoutPage.ts              # Shipping info, price calculation, order finish
-├── playwright-report/               # Playwright HTML report (generated)
+│   ├── BasePage.ts
+│   ├── LoginPage.ts
+│   ├── InventoryPage.ts
+│   ├── CartPage.ts
+│   └── CheckoutPage.ts
+├── playwright-report/
 ├── test-data/
-│   ├── checkoutData.ts              # Checkout customer info and expected order data
-│   └── userData.ts                  # SauceDemo user credentials / login test data
-├── test-results/                    # Screenshots, traces, videos (generated)
+│   ├── checkoutData.ts
+│   └── userData.ts
+├── test-results/
 ├── tests/
 │   ├── api/
-│   │   └── simple-books-api.spec.ts # Simple Books API scenarios (TC_API_01 – TC_API_14)
+│   │   └── simple-books-api.spec.ts
 │   └── web/
-│       ├── login.spec.ts            # SauceDemo authentication suite
-│       └── e2e-order.spec.ts        # End-to-end purchase flows (TC_E2E_01 – TC_E2E_06)
+│       ├── login.spec.ts
+│       └── e2e-order.spec.ts
 ├── utils/
-│   ├── dataGenerator.ts             # Dynamic email, customer and string generators
-│   ├── envHelper.ts                 # Environment variable loader with default fallbacks
-│   └── index.ts                     # Barrel file re-exporting all utilities
-├── .gitignore                       # Ignore rules for reports, logs and dependencies
-├── Jenkinsfile                      # Jenkins declarative pipeline
-├── package.json                     # Dependencies and npm script shortcuts
-├── package-lock.json                # Resolved dependency tree
-├── playwright.config.ts             # Runner config (browsers, reporters, retries, workers)
-└── tsconfig.json                    # TypeScript compiler settings
-🌍 Applications Under Test
-🛍️ Swag Labs (SauceDemo) — Web UI
+│   ├── dataGenerator.ts
+│   ├── envHelper.ts
+│   └── index.ts
+├── .gitignore
+├── Jenkinsfile
+├── package.json
+├── package-lock.json
+├── playwright.config.ts
+├── tsconfig.json
+└── README.md
+```
+
+---
+
+## Applications Under Test
+
+### Swag Labs (SauceDemo) — Web UI
+
 URL: https://www.saucedemo.com/
-A sample e-commerce app published by Sauce Labs for automation practice.
-Password for all users: secret_sauce
-Username	Behavior
-standard_user	Normal, fully working user
-locked_out_user	Login is rejected with a "locked out" error
-problem_user	Intentionally shows broken images / UI glitches
-performance_glitch_user	Slow responses on login/navigation
-error_user	Triggers errors on certain actions
-visual_user	Visual/layout differences for visual testing
 
-💡 Credentials are publicly listed on the SauceDemo login page and are safe to use in this repository.
+Password for all users: `secret_sauce`
 
-📚 Simple Books API — REST
+| Username | Behavior |
+| --- | --- |
+| `standard_user` | Normal user |
+| `locked_out_user` | Login rejected |
+| `problem_user` | Broken UI / image issues |
+| `performance_glitch_user` | Slow page responses |
+| `error_user` | Simulated error scenarios |
+| `visual_user` | Visual layout differences |
+
+> These credentials are publicly known and intended for test automation practice.
+
+### Simple Books API — REST
+
 Base URL: https://simple-books-api.click
-Reference: Simple Books API documentation
-Allows you to browse books and reserve (order) a book.
-Method	Endpoint	Auth	Description
-GET	/status	❌	Returns the API status
-GET	/books	❌	List books. Optional query: type (fiction | non-fiction), limit (1–20)
-GET	/books/:bookId	❌	Detailed information about a single book
-POST	/api-clients/	❌	Register an API client and get an access token (valid 7 days)
-POST	/orders	✅	Submit an order (bookId, customerName) — returns the order ID
-GET	/orders	✅	Retrieve all orders of the authenticated client
-GET	/orders/:orderId	✅	Retrieve a single order
-PATCH	/orders/:orderId	✅	Update an order (customerName)
-DELETE	/orders/:orderId	✅	Delete an order (empty request body)
 
-Authentication — register a client, then send the token as a Bearer header:
+| Method | Endpoint | Auth | Description |
+| --- | --- | --- | --- |
+| GET | `/status` | No | API health status |
+| GET | `/books` | No | List books |
+| GET | `/books/:bookId` | No | Get a single book |
+| POST | `/api-clients/` | No | Register a client and get a token |
+| POST | `/orders` | Yes | Place an order |
+| GET | `/orders` | Yes | Get all orders |
+| GET | `/orders/:orderId` | Yes | Get one order |
+| PATCH | `/orders/:orderId` | Yes | Update an order |
+| DELETE | `/orders/:orderId` | Yes | Delete an order |
 
-http
+Example client registration:
+
+```http
 POST /api-clients/
 Content-Type: application/json
 
@@ -156,7 +211,11 @@ Content-Type: application/json
   "clientName": "Postman",
   "clientEmail": "valentin@example.com"
 }
-http
+```
+
+Example order creation:
+
+```http
 POST /orders
 Authorization: Bearer <YOUR TOKEN>
 Content-Type: application/json
@@ -165,37 +224,50 @@ Content-Type: application/json
   "bookId": 1,
   "customerName": "John"
 }
+```
 
-⚠️ Registering a client with an already-used clientEmail returns 409 Conflict ("API client already registered"). This framework generates a unique email per run to avoid it.
+> A duplicate `clientEmail` returns `409 Conflict`. This framework generates a unique email per test run to avoid collisions.
 
-📋 Prerequisites
-Requirement	Version	Notes
-Node.js	v18.x or v20.x LTS	Download
-npm	v9+	Bundled with Node.js
-Git	Latest	Download
-Java (JRE/JDK)	8+ (11+ recommended)	Required only for generating Allure reports; must be on PATH
-🚀 Installation & Setup
-bash
+---
+
+## Prerequisites
+
+| Requirement | Version | Notes |
+| --- | --- | --- |
+| Node.js | v18.x or v20.x LTS | Required |
+| npm | v9+ | Included with Node.js |
+| Git | Latest | Required |
+| Java (JRE/JDK) | 8+ (11+ recommended) | Required for Allure |
+
+---
+
+## Installation & Setup
+
+```bash
 # 1. Clone the repository
 git clone <repository-url>
 cd playwright-pom-framework
 
-# 2. Install project dependencies
+# 2. Install dependencies
 npm install
 
 # 3. Install Playwright browsers and OS dependencies
 npx playwright install --with-deps
 
-# 4. (Optional) Verify TypeScript compiles cleanly
+# 4. Optional: verify TypeScript compilation
 npx tsc --noEmit
 
-# 5. Run the whole suite
+# 5. Run the full suite
 npx playwright test
-🔧 Environment Configuration
+```
 
-Configuration values are loaded by utils/envHelper.ts, which falls back to sensible defaults, so the framework runs out of the box. To override values, create a .env file in the project root (make sure it is listed in .gitignore):
+---
 
-env
+## Environment Configuration
+
+Create a `.env` file in the project root if you want to override defaults:
+
+```env
 # Web UI (SauceDemo)
 BASE_URL=https://www.saucedemo.com
 STANDARD_USER=standard_user
@@ -204,103 +276,119 @@ PASSWORD=secret_sauce
 
 # REST API (Simple Books API)
 API_BASE_URL=https://simple-books-api.click
+```
 
-📝 Variable names above are illustrative — match them to the keys actually read in utils/envHelper.ts.
+The project loads these values via `utils/envHelper.ts`, which provides sensible default fallbacks so the framework works out of the box.
 
-🧪 Test Scenarios Covered
-1️⃣ Web UI Suite (SauceDemo)
-Area	Scenarios
-Authentication	Valid login, invalid credentials error handling, locked-out user validation
-Product Catalog	Product selection, sorting (A–Z, Z–A, Price Low→High, Price High→Low), dynamic cart badge increments
-End-to-End Checkout	Login → add to cart → cart validation → customer information → subtotal/tax calculation → order confirmation (TC_E2E_01 – TC_E2E_06)
-2️⃣ REST API Suite (Simple Books API)
-ID	Scenario	Request	Expected
-TC_API_01	Service health status	GET /status	200 OK
-TC_API_02	Filter catalog by query params	GET /books?type=fiction&limit=2	200 OK, filtered list
-TC_API_03	Single book + schema validation	GET /books/:id	200 OK, contract valid
-TC_API_04	Non-existent book ID (negative)	GET /books/99999	404 Not Found
-TC_API_05	Client registration & token acquisition	POST /api-clients	201 Created, accessToken
-TC_API_06	Duplicate client registration	POST /api-clients	409 Conflict
-TC_API_07	Order an in-stock book	POST /orders	201 Created, orderId
-TC_API_08	Order without token (authorization)	POST /orders	401 Unauthorized
-TC_API_09	Order an out-of-stock book (business rule)	POST /orders	404 / 400
-TC_API_10	Retrieve all customer orders	GET /orders	200 OK
-TC_API_11	Retrieve a specific order	GET /orders/:orderId	200 OK
-TC_API_12	Update customer name + persistence check	PATCH /orders/:orderId	204 No Content
-TC_API_13	Delete an order	DELETE /orders/:orderId	204 No Content
-TC_API_14	Delete an already-deleted order	DELETE /orders/:orderId	404 Not Found
-▶️ Running Tests
-Run everything
-bash
+---
+
+## Test Scenarios Covered
+
+### Web UI Suite
+
+| Area | Scenarios |
+| --- | --- |
+| Authentication | Valid login, invalid credentials, locked-out user validation |
+| Product Catalog | Product selection, sorting, cart badge validation |
+| Checkout | Login → add to cart → validate cart → checkout → totals → confirmation |
+
+### REST API Suite
+
+| ID | Scenario | Request | Expected |
+| --- | --- | --- | --- |
+| TC_API_01 | Service health | GET `/status` | 200 OK |
+| TC_API_02 | Filter books by query | GET `/books?type=fiction&limit=2` | 200 OK |
+| TC_API_03 | Fetch single book | GET `/books/:id` | 200 OK |
+| TC_API_04 | Missing book | GET `/books/99999` | 404 |
+| TC_API_05 | Register client | POST `/api-clients` | 201 Created |
+| TC_API_06 | Duplicate client registration | POST `/api-clients` | 409 Conflict |
+| TC_API_07 | Place order | POST `/orders` | 201 Created |
+| TC_API_08 | Order without token | POST `/orders` | 401 Unauthorized |
+| TC_API_09 | Out-of-stock order | POST `/orders` | 404 / 400 |
+| TC_API_10 | Get all orders | GET `/orders` | 200 OK |
+| TC_API_11 | Get one order | GET `/orders/:orderId` | 200 OK |
+| TC_API_12 | Update order name | PATCH `/orders/:orderId` | 204 No Content |
+| TC_API_13 | Delete order | DELETE `/orders/:orderId` | 204 No Content |
+| TC_API_14 | Delete already-deleted order | DELETE `/orders/:orderId` | 404 |
+
+---
+
+## Running Tests
+
+### Full suite
+
+```bash
 npx playwright test
-Run by layer
-bash
-npx playwright test tests/web/     # UI suite only
-npx playwright test tests/api/     # API suite only
-Run specific files or scenarios
-bash
+```
+
+### By layer
+
+```bash
+npx playwright test tests/web/
+npx playwright test tests/api/
+```
+
+### Specific files
+
+```bash
 npx playwright test tests/web/e2e-order.spec.ts
 npx playwright test tests/api/simple-books-api.spec.ts
+```
 
-# Filter by test title / ID
+### Filter by title or ID
+
+```bash
 npx playwright test -g "TC_API_01"
 npx playwright test -g "TC_E2E_01"
-Browser selection & headed mode
-bash
+```
+
+### Browser selection
+
+```bash
 npx playwright test --project=chromium
 npx playwright test --project=firefox
 npx playwright test --project=webkit
+```
+
+### Headed mode
+
+```bash
 npx playwright test tests/web/ --headed
-Debugging & UI mode
-bash
-npx playwright test --ui       # Interactive Playwright UI Mode
-npx playwright test --debug    # Step-by-step with Playwright Inspector
-Parallelism & retries
-bash
+```
+
+### Debug mode
+
+```bash
+npx playwright test --ui
+npx playwright test --debug
+```
+
+### Parallelism and retries
+
+```bash
 npx playwright test --workers=4
 npx playwright test --retries=2
-🔄 Test Execution Flow
-Reporters
-SauceDemo / Simple Books API
-Page Objects
-Fixtures
-Playwright Runner
-User / CI
-Reporters
-SauceDemo / Simple Books API
-Page Objects
-Fixtures
-Playwright Runner
-User / CI
-alt
-[Test fails]
-loop
-[Each test]
-npx playwright test
-Read playwright.config.ts
-Allocate parallel workers
-Create isolated context
-Inject page objects
-Navigate / interact / send request
-Response / rendered page
-Return locators / values
-expect() assertions in spec
-Capture screenshot + trace
-HTML report + Allure results
-Summary & exit code
-📄 Page Object Model & Fixtures
-Page Objects
+```
 
-Each page extends BasePage and encapsulates locators and actions only — assertions stay in spec files.
+---
 
-Class	File	Responsibility
-BasePage	pages/BasePage.ts	Shared navigation, click/fill wrappers, waits
-LoginPage	pages/LoginPage.ts	Login actions, error banner locator
-InventoryPage	pages/InventoryPage.ts	Product list, sorting, add-to-cart, cart badge
-CartPage	pages/CartPage.ts	Cart items and checkout navigation
-CheckoutPage	pages/CheckoutPage.ts	Customer info, price summary, finish order
-typescript
-// pages/LoginPage.ts (illustrative)
+## Page Object Model & Fixtures
+
+### Page Objects
+
+Each page object encapsulates locators and actions, while assertions remain in the spec file.
+
+| Class | File | Responsibility |
+| --- | --- | --- |
+| `BasePage` | `pages/BasePage.ts` | Shared interactions and waits |
+| `LoginPage` | `pages/LoginPage.ts` | Login actions and error handling |
+| `InventoryPage` | `pages/InventoryPage.ts` | Product listing and cart interactions |
+| `CartPage` | `pages/CartPage.ts` | Cart review and navigation |
+| `CheckoutPage` | `pages/CheckoutPage.ts` | Customer info and order finish |
+
+Example:
+
+```ts
 import { Page, Locator } from '@playwright/test';
 import { BasePage } from './BasePage';
 
@@ -324,12 +412,11 @@ export class LoginPage extends BasePage {
     await this.loginButton.click();
   }
 }
-Custom Fixtures (Dependency Injection)
+```
 
-Page objects are registered once in fixtures/pageFixtures.ts and injected into tests automatically.
+### Custom Fixtures
 
-typescript
-// fixtures/pageFixtures.ts (illustrative)
+```ts
 import { test as base } from '@playwright/test';
 import { LoginPage } from '../pages/LoginPage';
 import { InventoryPage } from '../pages/InventoryPage';
@@ -342,8 +429,11 @@ export const test = base.extend<Pages>({
 });
 
 export { expect } from '@playwright/test';
-Example Test
-typescript
+```
+
+Example usage:
+
+```ts
 import { test, expect } from '../../fixtures/pageFixtures';
 
 test('Valid login lands on the inventory page', async ({ loginPage, page }) => {
@@ -351,11 +441,15 @@ test('Valid login lands on the inventory page', async ({ loginPage, page }) => {
   await loginPage.login('standard_user', 'secret_sauce');
   await expect(page).toHaveURL(/inventory/);
 });
-🔌 API Testing Approach
+```
 
-API tests use Playwright's built-in request fixture — no browser is launched, making them very fast.
+---
 
-typescript
+## API Testing Approach
+
+API tests use Playwright's built-in `request` fixture, which allows fast and isolated HTTP calls without launching a browser.
+
+```ts
 import { test, expect } from '@playwright/test';
 import { randomBytes } from 'crypto';
 
@@ -373,108 +467,151 @@ test('TC_API_05: Register client and obtain token', async ({ request }) => {
   const body = await response.json();
   expect(body).toHaveProperty('accessToken');
 });
+```
 
 Good practices used:
+- Fresh unique client email for each run
+- Serial execution for dependent order lifecycle tests
+- Contract validation for API responses
+- Cleanup of created orders after test execution
 
-🔑 A fresh, unique client (random email) is registered per run → avoids 409 Conflict and a missing accessToken
-🔗 Order-lifecycle tests (create → get → patch → delete → re-delete) run serially in a single describe block so they can share the orderId
-✅ Status codes, response bodies and schema/contract are all asserted
-🧹 Created orders are deleted at the end to keep the test environment clean
-📊 Test Data Management
-Source	Location	Purpose
-Checkout data	test-data/checkoutData.ts	Customer first/last name, postal code, expected totals
-User data	test-data/userData.ts	SauceDemo usernames and password for login scenarios
-Dynamic data	utils/dataGenerator.ts	Unique emails, customer names, random strings (timestamps / crypto)
-Environment	utils/envHelper.ts	URLs and credentials with default fallbacks
+---
 
-All utilities are re-exported from utils/index.ts:
+## Test Data Management
 
-typescript
+| Source | File | Purpose |
+| --- | --- | --- |
+| Checkout data | `test-data/checkoutData.ts` | Customer info and expected totals |
+| User data | `test-data/userData.ts` | SauceDemo usernames and passwords |
+| Dynamic data | `utils/dataGenerator.ts` | Unique emails and random values |
+| Environment config | `utils/envHelper.ts` | Base URLs and credentials |
+
+These utilities are re-exported through:
+
+```ts
 import { getEnv, generateEmail } from '../../utils';
-📈 Reporting
-1️⃣ Playwright HTML Report
+```
 
-Generated automatically after each run:
+---
 
-bash
+## Reporting
+
+### Playwright HTML Report
+
+```bash
 npx playwright show-report
-2️⃣ Allure Report
+```
 
-Test data is written to allure-results/ on every run.
+### Allure Report
 
-bash
-# (Optional) clean previous results
+```bash
+# Clean previous reports
 rm -rf allure-results allure-report
 
-# Run tests to generate fresh results
+# Run the tests
 npx playwright test
 
-# Generate and open the report
+# Generate Allure report
 npx allure generate allure-results --clean -o allure-report
+
+# Open the report
 npx allure open allure-report
+```
 
-# Or serve it directly from a temporary server
-npx allure serve allure-results
+### Failure Artifacts
 
-🪟 Windows (PowerShell): use Remove-Item -Recurse -Force allure-results, allure-report instead of rm -rf.
+Playwright stores traces, screenshots, and videos under `test-results/`.
 
-3️⃣ Failure Artifacts
-
-On failure, Playwright keeps screenshots, traces and (optionally) videos under test-results/. Open a trace with:
-
-bash
+```bash
 npx playwright show-trace test-results/<test-folder>/trace.zip
-🚀 CI/CD Integration
-🟦 GitHub Actions
+```
 
-Workflow: .github/workflows/playwright.yml — runs the regression suite on pushes and pull requests and uploads the report as an artifact.
+---
 
-🔴 Jenkins
+## CI/CD Integration
 
-The included Jenkinsfile is a declarative pipeline:
+### GitHub Actions
 
-🔄 Checkout
-📦 Install Dependenciesnpm ci
-🌐 Install Browsersplaywright install--with-deps chromium
-🧪 Execute Tests--project=chromium
-📊 Post Actions
-Stage	Description
-Checkout	Clones the repository from source control
-Install Dependencies	npm ci for deterministic installs
-Install Browsers	npx playwright install --with-deps chromium so the agent has browsers and OS libraries
-Execute Tests	Runs tests with --project=chromium
-Post Actions	Archives playwright-report/** and test-results/**, publishes the Allure dashboard via the Jenkins Allure Plugin, and cleans the workspace
-🔧 Troubleshooting
-Issue	Root Cause	Solution
-ts(2307): Cannot find module '../../utils'	Missing barrel file	Ensure utils/index.ts exists and re-exports modules, e.g. export * from './envHelper'; export * from './dataGenerator';
-ts(2304): Cannot find name 'accessToken'	Variable not declared in test scope	Declare let accessToken: string; in the describe scope or generate the token inside the test
-API 401 Unauthorized on /orders	Earlier POST /api-clients returned 409, leaving accessToken undefined	Generate a unique client email using a timestamp or crypto.randomBytes(4).toString('hex')
-Parallel race conditions	Tests share mutable outer variables across workers	Make tests self-contained or set up preconditions in test.beforeEach; use test.describe.configure({ mode: 'serial' }) for dependent flows
-allure command not recognized	allure-commandline not installed	Run via npx allure ... or npm install -g allure-commandline
-Allure fails with Java error	Java missing or not on PATH	Install JDK 8+ and verify with java -version
-Browsers missing / launch errors	Playwright binaries not installed	Run npx playwright install --with-deps
-API tests fail with ENOTFOUND / timeouts	Wrong base URL or network issue	Confirm the base URL is https://simple-books-api.click and the API is reachable
-Login tests flaky on performance_glitch_user	Slow app responses	Increase the timeout for that test or rely on Playwright auto-waiting assertions
-📐 Coding Conventions
-Assertions live in specs only. Keep expect() inside tests/**/*.spec.ts; page objects perform actions or return locators/values.
-Locator strategy. Prefer semantic locators (getByRole, getByPlaceholder, getByText) or stable IDs/data-test attributes (#user-name). Avoid brittle absolute XPath.
-Fixture registration. When adding a new page object, register it in fixtures/pageFixtures.ts so it is injectable into UI specs.
-Self-contained tests. Each test should create (and clean up) its own data.
-Naming. Use IDs and descriptive titles, e.g. TC_API_07: Place order for in-stock book.
-Clean code. Run TypeScript verification before opening a Pull Request:
-bash
-  npx tsc --noEmit
-🤝 Contributing
+The project includes a workflow at:
 
-Branching strategy and Git standards are documented in docs/git_github.md.
+```text
+.github/workflows/playwright.yml
+```
 
-Fork the repository and create a feature branch: git checkout -b feature/<short-description>
-Make your changes following the coding conventions
-Run the relevant tests locally and npx tsc --noEmit
-Commit with a clear message and push your branch
-Open a Pull Request against main
-📚 References
-Playwright Documentation
-Swag Labs (SauceDemo)
-Simple Books API documentation
-Allure Report
+This workflow runs the regression suite on pushes and pull requests and uploads the generated report as an artifact.
+
+### Jenkins
+
+The repository includes a `Jenkinsfile` for declarative pipeline execution:
+
+- Checkout
+- Install dependencies (`npm ci`)
+- Install Playwright browsers
+- Run tests with Chromium
+- Archive reports and artifacts
+- Publish Allure dashboard
+
+---
+
+## Troubleshooting
+
+| Issue | Cause | Fix |
+| --- | --- | --- |
+| `Cannot find module '../../utils'` | Missing barrel export | Ensure `utils/index.ts` exports the modules |
+| `Cannot find name 'accessToken'` | Variable not declared in scope | Declare `let accessToken: string;` |
+| `401 Unauthorized` on `/orders` | Token missing or invalid | Register a new client with a unique email |
+| Parallel test race | Shared mutable data | Use self-contained tests or serial mode |
+| `allure` command missing | `allure-commandline` not installed | Use `npx allure ...` |
+| Java-related Allure failure | Java missing from PATH | Install JDK 8+ and verify with `java -version` |
+| Browser launch errors | Playwright browsers not installed | Run `npx playwright install --with-deps` |
+| API timeout / ENOTFOUND | Wrong URL or network issue | Verify `https://simple-books-api.click` is reachable |
+
+---
+
+## Coding Conventions
+
+- Keep `expect()` assertions inside spec files
+- Prefer semantic locators such as `getByRole`, `getByPlaceholder`, and `getByText`
+- Register new page objects in `fixtures/pageFixtures.ts`
+- Keep tests self-contained and clean up generated data
+- Use descriptive test names, e.g. `TC_API_07: Place order for in-stock book`
+- Validate TypeScript before opening a PR:
+
+```bash
+npx tsc --noEmit
+```
+
+---
+
+## Contributing
+
+This project follows a standard branching workflow. More details are available in:
+
+```text
+docs/git_github.md
+```
+
+Recommended workflow:
+
+```bash
+git checkout -b feature/<short-description>
+# make changes
+npx playwright test
+npx tsc --noEmit
+git add .
+git commit -m "Add feature description"
+git push origin feature/<short-description>
+```
+
+Then open a Pull Request against `main`.
+
+---
+
+## References
+
+- Playwright Documentation
+- SauceDemo
+- Simple Books API
+- Allure Report
+
+---
