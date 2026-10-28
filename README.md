@@ -616,5 +616,8 @@ Then open a Pull Request against `main`.
 - SauceDemo
 - Simple Books API
 - Allure Report
+- Allure Report Details:
+<img width="916" height="509" alt="image" src="https://github.com/user-attachments/assets/1f8e2f3a-4a41-4594-bdce-8507b3e0aa2f" />
+
 
 ---
