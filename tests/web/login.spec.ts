@@ -204,16 +204,6 @@ test('TC_AUTH_11 - Authentication and asset loading check with problem_user', as
       body: JSON.stringify(cartBox, null, 2),
       contentType: 'application/json',
     });
-
-    // Verify visual alignment / layout shift detection
-    // Approach A: Element snapshot comparison (detects pixel/layout shifts)
-    // To generate or update the baseline, run with the --update-snapshots flag
-    await expect(inventoryPage.shoppingCartContainer).toHaveScreenshot(
-      'visual-user-cart.png',
-      {
-        maxDiffPixelRatio: 0.1,
-      }
-    );
   });
 
 

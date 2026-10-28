@@ -101,4 +101,128 @@ test.describe('E2E Checkout Flow', () => {
       checkoutData.missingFirstName.expectedError
     );
   });
+  test('TC_E2E_03 - Checkout Step One validation - missing Last Name', async ({
+    page,
+    inventoryPage,
+    cartPage,
+    checkoutPage,
+  }) => {
+    await inventoryPage.addProductToCart('sauce-labs-backpack');
+    await inventoryPage.openCart();
+    await cartPage.clickCheckout();
+    await expect(page).toHaveURL(/.*checkout-step-one\.html/);
+
+    // 1. Enter valid First Name
+    await checkoutPage.enterFirstName(checkoutData.missingLastName.firstName);
+
+    // 2. Leave 'Last Name' field blank (no input action required)
+
+    // 3. Enter valid Postal Code
+    await checkoutPage.enterPostalCode(checkoutData.missingLastName.postalCode);
+
+    // 4. Click 'Continue'
+    await checkoutPage.clickContinue();
+
+    // Assert: Form submission is halted and user remains on checkout-step-one.html
+    await expect(page).toHaveURL(/.*checkout-step-one\.html/);
+
+    // Assert: Error banner appears with the expected validation message
+    await expect(checkoutPage.errorMessage).toBeVisible();
+    await expect(checkoutPage.errorMessage).toHaveText(
+      checkoutData.missingLastName.expectedError
+    );
+  });
+
+  test('TC_E2E_04 - Checkout Step One validation - missing Postal Code', async ({
+    page,
+    inventoryPage,
+    cartPage,
+    checkoutPage,
+  }) => {
+    await inventoryPage.addProductToCart('sauce-labs-backpack');
+    await inventoryPage.openCart();
+    await cartPage.clickCheckout();
+    await expect(page).toHaveURL(/.*checkout-step-one\.html/);
+
+    // 1. Enter valid First Name and Last Name
+    await checkoutPage.enterFirstName(checkoutData.missingPostalCode.firstName);
+    await checkoutPage.enterLastName(checkoutData.missingPostalCode.lastName);
+
+    // 2. Leave 'Postal Code' field blank (no input action required)
+
+    // 3. Click 'Continue'
+    await checkoutPage.clickContinue();
+
+    // Assert: Form submission is halted and user remains on checkout-step-one.html
+    await expect(page).toHaveURL(/.*checkout-step-one\.html/);
+
+    // Assert: Error banner appears with the expected validation message
+    await expect(checkoutPage.errorMessage).toBeVisible();
+    await expect(checkoutPage.errorMessage).toHaveText(
+      checkoutData.missingPostalCode.expectedError
+    );
+  });
+  test('TC_E2E_05 - Cancel checkout at Step One and verify navigation back to cart', async ({
+      page,
+      checkoutPage,
+      cartPage,
+      inventoryPage,
+    }) => {
+      await inventoryPage.addProductToCart('sauce-labs-backpack');
+      await inventoryPage.openCart();
+      await cartPage.clickCheckout();
+      await expect(page).toHaveURL(/.*checkout-step-one\.html/);
+
+      await checkoutPage.clickCancel();
+
+      await expect(page).toHaveURL(/.*cart\.html/);
+      await expect(inventoryPage.cartBadge).toBeVisible();
+      await expect(inventoryPage.cartBadge).toHaveText('1');
+      await expect(cartPage.cartItems).toHaveCount(1);
+      await expect(cartPage.itemName).toHaveText('Sauce Labs Backpack');
+    });
+ 
+  test('TC_E2E_06 - Cancel checkout at Overview (Step Two) and verify navigation back to inventory', async ({
+    page,
+    loginPage,
+    inventoryPage,
+    cartPage,
+    checkoutPage,
+  }) => {
+    // Preconditions: User is logged in, item added to cart, and navigated to checkout overview
+    await loginPage.open();
+    await loginPage.login(
+      testUsers.standardUser.username,
+      testUsers.standardUser.password
+    );
+    await inventoryPage.addProductToCart('sauce-labs-backpack');
+    await inventoryPage.openCart();
+    await cartPage.clickCheckout();
+
+    await checkoutPage.fillCustomerInformation(
+      checkoutData.validCustomer.firstName,
+      checkoutData.validCustomer.lastName,
+      checkoutData.validCustomer.postalCode
+    );
+
+    // Verify reached Step Two: Overview
+    await expect(page).toHaveURL(/.*checkout-step-two\.html/);
+
+    // 1. Review order details (verify overview container is displayed)
+    await expect(checkoutPage.summarySubtotal).toBeVisible();
+
+    // 2. Click 'Cancel' button on the overview page
+    await checkoutPage.clickCancel();
+
+    // Assert: User is redirected back to /inventory.html
+    await expect(page).toHaveURL(/.*inventory\.html/);
+
+    // Assert: Product catalog renders properly
+    await expect(inventoryPage.titleHeader).toBeVisible();
+    await expect(inventoryPage.titleHeader).toHaveText('Products');
+
+    // Assert: Shopping cart badge retains the item
+    await expect(inventoryPage.cartBadge).toBeVisible();
+    await expect(inventoryPage.cartBadge).toHaveText('1');
+  });
 });

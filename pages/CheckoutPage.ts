@@ -8,6 +8,7 @@ export class CheckoutPage extends BasePage {
   readonly lastNameInput: Locator;
   readonly postalCodeInput: Locator;
   readonly continueButton: Locator;
+  readonly cancelButton: Locator;
   readonly errorMessage: Locator;
   
 
@@ -27,6 +28,7 @@ export class CheckoutPage extends BasePage {
     this.lastNameInput = page.locator('[data-test="lastName"]');
     this.postalCodeInput = page.locator('[data-test="postalCode"]');
     this.continueButton = page.locator('[data-test="continue"]');
+    this.cancelButton = page.locator('[data-test="cancel"]');
     this.errorMessage = page.locator('[data-test="error"]');
 
     this.summarySubtotal = page.locator('[data-test="subtotal-label"]');
@@ -38,6 +40,10 @@ export class CheckoutPage extends BasePage {
     this.completeText = page.locator('[data-test="complete-text"]');
   }
 
+  async clickCancel(): Promise<void> {
+    await this.cancelButton.click();
+  }
+  
   async enterFirstName(firstName: string): Promise<void> {
     await this.firstNameInput.fill(firstName);
   }
