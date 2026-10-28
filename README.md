@@ -1,3 +1,6 @@
+Automated Test Cases Documention:
+https://docs.google.com/spreadsheets/d/15CeJ-r5Vli0ec-sDDPum7JIWNkqfWuLz6Ti7mwS2Mys/edit?usp=sharing
+
 ```md
 # 🎭 Playwright + TypeScript Automation Framework
 
